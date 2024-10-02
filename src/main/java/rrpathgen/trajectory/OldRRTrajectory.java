@@ -70,6 +70,18 @@ public class OldRRTrajectory implements Trajectory{
                     case lineToConstantHeading:
                         builder.lineToConstantHeading(new Vector2d(node.x, node.y));
                         break;
+                    case strafeTo:
+                        builder.lineTo(new Vector2d(node.x, node.y));
+                        break;
+                    case strafeToSplineHeading:
+                        builder.lineToSplineHeading(new Pose2d(node.x, node.y, Math.toRadians(-node.robotHeading-90)));
+                        break;
+                    case strafeToLinearHeading:
+                        builder.lineToLinearHeading(new Pose2d(node.x, node.y, Math.toRadians(-node.robotHeading-90)));
+                        break;
+                    case strafeToConstantHeading:
+                        builder.lineToConstantHeading(new Vector2d(node.x, node.y));
+                        break;
                     case addTemporalMarker:
                         Marker marker = (Marker) manager.get(i);
                         builder.UNSTABLE_addTemporalMarkerOffset(marker.displacement, () -> {});

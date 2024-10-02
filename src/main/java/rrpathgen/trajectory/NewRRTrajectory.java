@@ -31,6 +31,10 @@ public class NewRRTrajectory extends OldRRTrajectory{
     @Override
     public Node.Type[] getValidNodeTypes() {
         return new Node.Type[]{
+                Node.Type.strafeToLinearHeading,
+                Node.Type.strafeTo,
+                Node.Type.strafeToSplineHeading,
+                Node.Type.strafeToConstantHeading,
                 Node.Type.splineTo,
                 Node.Type.splineToSplineHeading,
                 Node.Type.splineToLinearHeading,
@@ -57,8 +61,10 @@ public class NewRRTrajectory extends OldRRTrajectory{
         double y = Main.toInches(node.y);
 
         StringBuilder sb = new StringBuilder();
-        if(Main.exportPanel.addDataType) sb.append("TrajectorySequence ");
-        sb.append(String.format("%s = drive.trajectorySequenceBuilder(new Pose2d(%.2f, %.2f, Math.toRadians(%.2f)))%n",getCurrentManager().name, x, -y, (node.robotHeading +90)));
+        sb.append(String.format("Pose2d beginPose = new Pose2d(%.2f, %.2f, Math.toRadians(%.2f));%n",x, -y, (node.robotHeading +90)));
+        sb.append("MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);\n" +
+                "waitForStart();\n");
+        sb.append("Actions.runBlocking(drive.actionBuilder(beginPose)\n");
         //sort the markers
         List<Marker> markers = getCurrentManager().getMarkers();
         markers.sort(Comparator.comparingDouble(n -> n.displacement));
@@ -104,6 +110,18 @@ public class NewRRTrajectory extends OldRRTrajectory{
                 case lineToConstantHeading:
                     sb.append(String.format(".lineToConstantHeading(new Vector2d(%.2f, %.2f))%n", x, -y, (node.splineHeading +90)));
                     break;
+                case strafeTo:
+                    sb.append(String.format(".strafeTo(new Vector2d(%.2f, %.2f))%n", x, -y));
+                    break;
+                case strafeToSplineHeading:
+                    sb.append(String.format(".strafeToSplineHeading(new Vector2d(%.2f, %.2f), Math.toRadians(%.2f))%n", x, -y, (node.robotHeading +90)));
+                    break;
+                case strafeToLinearHeading:
+                    sb.append(String.format(".strafeToLinearHeading(new Vector2d(%.2f, %.2f), Math.toRadians(%.2f))%n", x, -y, (node.robotHeading +90)));
+                    break;
+                case strafeToConstantHeading:
+                    sb.append(String.format(".strafeToConstantHeading(new Vector2d(%.2f, %.2f))%n", x, -y, (node.splineHeading +90)));
+                    break;
                 case addTemporalMarker:
                     break;
                 default:
@@ -115,7 +133,7 @@ public class NewRRTrajectory extends OldRRTrajectory{
                 prev = node.reversed;
             }
         }
-        sb.append(String.format(".build();%n"));
+        sb.append(String.format(".build());%n"));
         if(Main.exportPanel.addPoseEstimate) sb.append(String.format("drive.setPoseEstimate(%s.start());", getCurrentManager().name));
         return sb.toString();
     }

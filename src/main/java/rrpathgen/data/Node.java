@@ -18,7 +18,7 @@ public class Node {
     public State state;
     public boolean reversed = false;
 
-    private Type type = Type.splineTo;
+    private Type type = Type.strafeToLinearHeading;
 
     public enum Type {
         splineTo,
@@ -30,6 +30,10 @@ public class Node {
         lineToLinearHeading,
         lineToConstantHeading,
         addTemporalMarker,
+        strafeTo,
+        strafeToSplineHeading,
+        strafeToLinearHeading,
+        strafeToConstantHeading,
     }
     public Node(){
 
