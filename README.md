@@ -46,3 +46,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Running JAR Build
+
+For testing use -> java -jar .\build\libs\RRPathGen-1.7.0.jar
+
+File location is \build\libs\RRPathGen-1.7.0.jar
