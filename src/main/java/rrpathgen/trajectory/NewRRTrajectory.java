@@ -61,9 +61,8 @@ public class NewRRTrajectory extends OldRRTrajectory{
         double y = Main.toInches(node.y);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Pose2d beginPose = new Pose2d(%.2f, %.2f, Math.toRadians(%.2f));%n",x, -y, (node.robotHeading +90)));
-        sb.append("MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);\n" +
-                "waitForStart();\n");
+        sb.append(String.format("beginPose = new Pose2d(%.2f, %.2f, Math.toRadians(%.2f));%n",x, -y, (node.robotHeading +90)));
+        sb.append("drive.setPose(beginPose);\n");
         sb.append("Actions.runBlocking(drive.actionBuilder(beginPose)\n");
         //sort the markers
         List<Marker> markers = getCurrentManager().getMarkers();

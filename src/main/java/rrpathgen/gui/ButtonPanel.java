@@ -18,6 +18,7 @@ import java.util.List;
 public class ButtonPanel extends JPanel {
 
     private final JButton exportButton = new JButton("Export");
+    private final JButton exportFullButton = new JButton("Export Full");
     private final JButton importButton = new JButton("Import");
     public final JButton flipButton = new JButton("Flip");
     private final JButton clearButton = new JButton("Clear");
@@ -32,15 +33,18 @@ public class ButtonPanel extends JPanel {
         this.main = main;
         this.managers = managers;
         this.setMinimumSize(new Dimension(0,20));
-        this.setLayout(new GridLayout(1, 4, 1, 1));
+        this.setLayout(new GridLayout(1, 5, 1, 1));
 
         exportButton.setFocusable(false);
+        exportFullButton.setFocusable(false);
         importButton.setFocusable(false);
         flipButton.setFocusable(false);
         clearButton.setFocusable(false);
         undoButton.setFocusable(false);
         redoButton.setFocusable(false);
+
         this.add(exportButton);
+        this.add(exportFullButton);
         this.add(importButton);
         this.add(flipButton);
         this.add(clearButton);
@@ -50,6 +54,8 @@ public class ButtonPanel extends JPanel {
         this.setVisible(true);
 
         exportButton.addActionListener(e -> export());
+
+        exportFullButton.addActionListener(e -> exportFull());
 
         flipButton.addActionListener(e -> {
             main.flip();
@@ -142,6 +148,32 @@ public class ButtonPanel extends JPanel {
         }
 
         String exportString = Main.drawPanel.getTrajectory().constructExportString();
+        main.exportPanel.field.setText(exportString);
+    }
+
+    public void exportFull(){
+        if(getCurrentManager().size() <= 0) {
+            return;
+        }
+        main.infoPanel.editPanel.saveValues();
+        main.infoPanel.markerPanel.saveValues();
+
+        if(!robot.importPath.matches("")){
+            File outputFile = new File(robot.importPath.substring(0,robot.importPath.length()-4) + "backup.java");
+            System.out.println(outputFile.getPath());
+            try {
+                outputFile.createNewFile();
+                FileWriter writer = new FileWriter(outputFile);
+                Scanner reader = new Scanner(new File(robot.importPath));
+
+                writer.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        }
+
+        String exportString = Main.drawPanel.getAllTrajs();
         main.exportPanel.field.setText(exportString);
     }
 

@@ -56,6 +56,8 @@ public class DrawPanel extends JPanel {
         preRenderedSplines = null;
 //        renderBackgroundSplines();
         repaint();
+
+
     }
 
     @Override
@@ -231,6 +233,25 @@ public class DrawPanel extends JPanel {
 
     public rrpathgen.trajectory.Trajectory getTrajectory(){
         return traj;
+    }
+
+    public String getAllTrajs(){
+
+        StringBuilder trajs = new StringBuilder();
+
+        for(NodeManager manager : managers){
+            System.out.println(manager.name);
+
+            setManager(manager);
+
+            traj.generateTrajectory(manager, manager.get(0), robot);
+
+            System.out.println(traj.constructExportString());
+
+            trajs.append("\n").append(traj.constructExportString());
+        }
+
+        return trajs.toString();
     }
 
     private void mPressed(MouseEvent e) {

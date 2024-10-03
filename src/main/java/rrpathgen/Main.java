@@ -226,6 +226,10 @@ public class Main extends JFrame {
         getCurrentManager().redo.pop();
     }
 
+    public static void setManager(NodeManager manager) {
+        currentManager = manager;
+    }
+
     public static void saveConfig() {
         properties.save();
     }

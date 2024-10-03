@@ -22,7 +22,7 @@ dependencies {
 tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
 
 jar {
-
+    duplicatesStrategy 'exclude'
     sourceSets {
         main {
             resources {
@@ -32,8 +32,11 @@ jar {
     }
     manifest {
         attributes(
-                "Main-Class" : "jarhead.Main"
+                "Main-Class" : "rrpathgen.Main"
         )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
