@@ -48,6 +48,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Running JAR Build
+To create jar, click on Gradle Panel on the right hand screen,
+under Tasks/build, double-click the build icon to run it,
+when complete...
 
 For testing use -> java -jar .\build\libs\RRPathGen-1.7.0.jar
 
